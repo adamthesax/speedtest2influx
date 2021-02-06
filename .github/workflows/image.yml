@@ -23,7 +23,7 @@ jobs:
       - name: build the image
         run: |
           docker buildx build \
-            --tag adamthesax/speedtest2influx:latest \
+            --tag $GITHUB_REPOSITORY:latest \
             --output type=image,push=true \
             --platform ${{ steps.qemu.outputs.platforms }} .
           
