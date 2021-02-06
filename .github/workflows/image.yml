@@ -10,13 +10,12 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v2
-      - name: install buildx
-        id: buildx
-        uses: crazy-max/ghaction-docker-buildx@v1
-        with:
-          version: latest
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: build the image
         run: |
           docker buildx build \
-            --tag your-username/multiarch-example:latest \
+            --tag adamthesax/speedtest2influx:latest \
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
