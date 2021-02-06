@@ -2,7 +2,26 @@
 
 Runs a [Speedtest](https://www.speedtest.net/) and logs the results to [InfluxDB](https://www.influxdata.com/).
 
-# Usage
+Written in go. ARM friendly docker images. Helm for easy k8s deployments.
+
+
+### influxdb
+#### Measurement
+* **`speedtest`** - All data collected will be under a speedtest measurement
+
+#### Fields
+* **`download`** - Download speed in Mbps
+* **`upload`** - Upload speed in Mbps
+* **`latency`** - Server latency speed in ms
+* **`distance`** - Distance to speedtest server
+
+#### Tags
+* **`id`** - Speedtest server id
+* **`country`** - Country of speedtest server
+* **`name`** - Name of speedtest server
+
+
+## Usage
 ```
 Usage:
   speedtest2influx [OPTIONS]
@@ -22,4 +41,27 @@ Help Options:
   -h, --help              Show this help message
 ```
 
+### Docker
+```
+docker run adamthesax/speedtest2influx --help
+```
+
+### Helm
+```
+helm install \
+    --set influxdb.url="http://influxdb.datastore.svc.cluster.local:8086" \
+    --set influxdb.org=myorg \
+    --set influxdb.bucket=speedtest \
+    speedtest2influx speedtest2influx/speedtest2influx
+```
+
+### Helm Values
+| name                 | description                                 | required | default |
+|----------------------|---------------------------------------------|----------|---------|
+| `speedtest.interval` | How often to run the speedtest (seconds)    | true     | `300`   |
+| `speedtest.server`   | ID of speedtest server. Defaults to fastest | false    |         |
+| `influxdb.url`       | HTTP(S) url to influxdb server.             | true     |         |
+| `influxdb.token`     | HTTP(S) url to influxdb server.             | false    |         |
+| `influxdb.org`       | InfluxDB org to write report to.            | true     |         |
+| `influxdb.bucket`    | InfluxDB bucket to write report to.         | true     |         |
 
