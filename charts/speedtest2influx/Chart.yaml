@@ -1,0 +1,6 @@
+apiVersion: v2
+name: speedtest2influx
+description: Runs a speedtest on a given interval and reports the results to InfluxDB
+type: application
+version: 0.1.0
+appVersion: 0.1.0

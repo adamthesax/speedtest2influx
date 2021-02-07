@@ -1,0 +1,2 @@
+
+speedtest2influx is ready to go.

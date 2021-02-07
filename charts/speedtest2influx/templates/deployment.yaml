@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "speedtest2influx.fullname" . }}
+  labels:
+    {{- include "speedtest2influx.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "speedtest2influx.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "speedtest2influx.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "--interval={{required "foo" .Values.speedtest.interval }}"
+            - "--influxdb-url={{required "influxdb.url is a required value" .Values.influxdb.url}}"
+            - "--influxdb-org={{required "influxdb.org is a required value" .Values.influxdb.org}}"
+            - "--influxdb-bucket={{required  "influxdb.bucket is a required value" .Values.influxdb.bucket}}"
+            {{ if .Values.speedtest.server }}
+            - "--speedtest-server={{ .Values.speedtest.server }}"
+            {{ end }}
+            {{ if .Values.influxdb.token }}
+            - "--influxdb-token={{ .Values.influxdb.token }}"
+            {{ end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
