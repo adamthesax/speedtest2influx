@@ -2,24 +2,9 @@
 
 Runs a [Speedtest](https://www.speedtest.net/) and logs the results to [InfluxDB](https://www.influxdata.com/).
 
+![screenshot](docs/screenshot.png)
+
 Written in go. ARM friendly docker images. Helm for easy k8s deployments.
-
-
-### influxdb
-#### Measurement
-* **`speedtest`** - All data collected will be under a speedtest measurement
-
-#### Fields
-* **`download`** - Download speed in Mbps
-* **`upload`** - Upload speed in Mbps
-* **`latency`** - Server latency speed in ms
-* **`distance`** - Distance to speedtest server
-
-#### Tags
-* **`id`** - Speedtest server id
-* **`country`** - Country of speedtest server
-* **`name`** - Name of speedtest server
-
 
 ## Usage
 ```
@@ -41,6 +26,21 @@ Help Options:
   -h, --help              Show this help message
 ```
 
+### influxdb
+#### Measurement
+* **`speedtest`** - All data collected will be under a speedtest measurement
+
+#### Fields
+* **`download`** - Download speed in Mbps
+* **`upload`** - Upload speed in Mbps
+* **`latency`** - Server latency speed in ms
+* **`distance`** - Distance to speedtest server
+
+#### Tags
+* **`id`** - Speedtest server id
+* **`country`** - Country of speedtest server
+* **`name`** - Name of speedtest server
+
 ### Docker
 ```
 docker run adamthesax/speedtest2influx --help
@@ -48,6 +48,7 @@ docker run adamthesax/speedtest2influx --help
 
 ### Helm
 ```
+helm repo add speedtest2influx https://adamthesax.github.io/speedtest2influx
 helm install \
     --set influxdb.url="http://influxdb.datastore.svc.cluster.local:8086" \
     --set influxdb.org=myorg \
