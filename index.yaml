@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  speedtest2influx:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2021-02-07T03:44:59.535102042Z"
+    description: Runs a speedtest on a given interval and reports the results to InfluxDB
+    digest: 8314a430ad2348324931147fefea8706f0f40121ebc3e87dfb791ca6eedaa204
+    name: speedtest2influx
+    type: application
+    urls:
+    - https://github.com/adamthesax/speedtest2influx/releases/download/speedtest2influx-0.1.1/speedtest2influx-0.1.1.tgz
+    version: 0.1.1
+generated: "2021-02-07T03:44:59.09696312Z"
